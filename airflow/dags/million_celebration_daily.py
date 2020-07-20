@@ -4,7 +4,7 @@ from million_celebration_pkg.million_celebration_config import *
 
 
 dag = DAG(
-    'million_celebration_daily_v0.3',
+    'million_celebration_daily_v0.0',
     default_args=common_args,
     description='call funtions related to million_celebration',
     schedule_interval="00 00 *  *  *",
@@ -21,7 +21,7 @@ task1 = PythonOperator(
     dag=dag,
 )
 task2 = PythonOperator(
-    task_id='million_celebration_upload',
+    task_id='million_celebration_tweet',
     python_callable=exec_functions,
     provide_context=True,
     op_kwargs={
