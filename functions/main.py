@@ -7,6 +7,7 @@ from twitter import Twitter, OAuth
 import time
 import numpy as np
 import channel_list
+
 # create latest table
 def fetch_info_in_playlist(client, playlist_id, next_page_token=None):
     # call YouTube playlistItems API
@@ -48,12 +49,10 @@ def fetch_info_in_playlist(client, playlist_id, next_page_token=None):
         return result
 
 def main_upload(requests):
-    client_yt = build("youtube", "v3", developerKey=config.key)
+    client_yt = build("youtube", "v3", developerKey=config.key, cache_discovery=False)
     client_bq = bigquery.Client(project=config.project_name)
-    table = "{}.million_celebration.view_count_{}".format(
-        config.project_name,
-        datetime.date.today().strftime("%Y%m%d")
-    )
+    yyyymmdd = datetime.date.today().strftime('%Y%m%d')
+    table = f"{config.project_name}.million_celebration.view_count_{yyyymmdd}"
     channels = channel_list.channels
     for c in channels:
         for p in c["playlists"]:
@@ -70,28 +69,24 @@ def main_tweet(requests):
         config.consumer_key,
         config.consumer_secret
     ))
-    table_today = "{}.million_celebration.view_count_{}".format(
-        config.project_name,
-        datetime.date.today().strftime("%Y%m%d")
-    )
-    table_yesterday = "{}.million_celebration.view_count_{}".format(
-        config.project_name,
-        (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y%m%d")
-    )
-    query = """
+    yyyymmdd_today = datetime.date.today().strftime('%Y%m%d')
+    yyyymmdd_yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y%m%d')
+    table_today = f"{config.project_name}.million_celebration.view_count_{yyyymmdd_today}"
+    table_yesterday = f"{config.project_name}.million_celebration.view_count_{yyyymmdd_yesterday}"
+    query = f"""
         SELECT t.playlist_id, t.video_id
-        FROM {} as t inner join {} as y using(video_id)
+        FROM {table_today} as t inner join {table_yesterday} as y using(video_id)
         WHERE y.view_count < 1000000 and 1000000 <= t.view_count
-    """.format(table_today, table_yesterday)
+    """
     query_job = client_bq.query(query)
     df = query_job.to_dataframe()
     channels = channel_list.channels
     for c in channels:
-        df_each = df.query("playlist_id in {}".format(c["playlists"]))
+        df_each = df.query(f"playlist_id in {c['playlists']}")
         videos = np.unique(df_each["video_id"].values)
         if videos.shape[0] == 0: continue
-        message_head = "【自動】{}100万再生おめでとう！\n".format(c["name"])
-        message_body = "".join(["https://www.youtube.com/watch?v={}\n".format(x) for x in videos])
-        message_tag = c.tag
+        message_head = f"【自動】{c['name']}100万再生おめでとう！\n"
+        message_body = "".join([f"https://www.youtube.com/watch?v={x}\n" for x in videos])
+        message_tag = c["tag"]
         client_tw.statuses.update(status=message_head+message_body+message_tag)
 
