@@ -13,12 +13,14 @@ def fetch_info_in_playlist(client, playlist_id, next_page_token=None):
     # call YouTube playlistItems API
     arg = {
         "playlistId": playlist_id,
-        "part": "snippet",
+        "part": "snippet,status",
         "maxResults": 50
     }
     if next_page_token is not None: arg["pageToken"] = next_page_token
     response_playlist_item = client.playlistItems().list(**arg).execute()
-    video_ids = [x["snippet"]["resourceId"]["videoId"] for x in response_playlist_item["items"]]
+    video_ids = [
+        x["snippet"]["resourceId"]["videoId"] for x in response_playlist_item["items"] if x["status"]["privacyStatus"] == "public"
+    ]
     # call YouTube videos API
     response_videos = client.videos().list(
         id=",".join(video_ids),
