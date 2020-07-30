@@ -36,10 +36,11 @@ channels = [
     {
         "name": "葵ちゃん",
         "playlists": [
-            "PLFPYP7GcgzURZuyfeK0mvYIanN5eSBWiw", # 【富士葵】おすすめのカバー【歌ってみた】
-            "PLFPYP7GcgzURIsOZBl62tLZfWzk0v38iZ", # 【ボカロ曲】人気順
-            "PLFPYP7GcgzUSd6WBbweHzUFwOKTGE-XXN", # 【アニソン／主題歌】
-            "PLFPYP7GcgzUSZFLYc9P4EUOuoXEe8Ekou", # 【人気カバー動画】
+            #"PLFPYP7GcgzURZuyfeK0mvYIanN5eSBWiw", # 【富士葵】おすすめのカバー【歌ってみた】
+            #"PLFPYP7GcgzURIsOZBl62tLZfWzk0v38iZ", # 【ボカロ曲】人気順
+            #"PLFPYP7GcgzUSd6WBbweHzUFwOKTGE-XXN", # 【アニソン／主題歌】
+            #"PLFPYP7GcgzUSZFLYc9P4EUOuoXEe8Ekou", # 【人気カバー動画】
+            "PLFPYP7GcgzUQD-sMeyh_OO1DGIA4ez52A", # 全カバー動画（投稿順）
             "OLAK5uy_mZmIsex6bXFJ2aaNtNX1CAi5dLffQbaII", # 有機的パレットシンドローム
             "OLAK5uy_kf0e0HNezVjnet8OUnHIK-5gEqkb8EVg4", # 声 ~Cover ch.~
         ],

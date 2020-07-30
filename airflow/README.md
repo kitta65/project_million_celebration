@@ -4,7 +4,7 @@
 
 # 導入
 ## configの作成
-`./dags`以下に`million_celebration_config.py`を作成。内容は以下。
+`./dags/million_celebration_pkg`以下に`million_celebration_config.py`を作成。内容は以下。
 
 ```
 sandbox_token = "xxxxx"
