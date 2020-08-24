@@ -87,7 +87,7 @@ def main_tweet(requests):
         df_each = df.query(f"playlist_id in {c['playlists']}")
         videos = np.unique(df_each["video_id"].values)
         if videos.shape[0] == 0: continue
-        message_head = f"【自動】{c['name']}100万再生おめでとう！\n"
+        message_head = f"{c['name']}100万再生おめでとう！\n"
         message_body = "".join([f"https://www.youtube.com/watch?v={x}\n" for x in videos])
         message_tag = c["tag"]
         client_tw.statuses.update(status=message_head+message_body+message_tag)
