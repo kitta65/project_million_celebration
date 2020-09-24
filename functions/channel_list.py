@@ -46,4 +46,11 @@ channels = [
         ],
         "tag": "#富士葵"
     },
+    {
+        "name": "ヒメヒナ",
+        "playlists": [
+            "PL1tX8zAv8bPkOg13XRuyrNsFQw8X2d6CQ", # ヒメヒナMusic
+        ],
+        "tag": "#ヒメヒナ"
+    },
 ]
