@@ -1,0 +1,51 @@
+steps:
+- id: download-config
+  dir: functions
+  name: gcr.io/cloud-builders/gsutil
+  args: ['cp', 'gs://dr666m1_secrets/config.py', './config.py']
+
+- id: deploy-upload-function
+  dir: functions
+  name: gcr.io/cloud-builders/gcloud
+  waitFor:
+  - download-config
+  args:
+  - functions
+  - deploy
+  - million_celebration_upload
+  - --entry-point
+  - main_upload
+  - --runtime
+  - python37
+  - --trigger-http
+  - --memory
+  - 2048MB
+  - --timeout
+  - 500s
+  - --ingress-settings
+  - internal-only
+  - --ignore-file
+  - ./.gcloudignore
+
+- id: deploy-tweet-function
+  dir: functions
+  name: gcr.io/cloud-builders/gcloud
+  waitFor:
+  - download-config
+  args:
+  - functions
+  - deploy
+  - million_celebration_tweet
+  - --entry-point
+  - main_tweet
+  - --runtime
+  - python37
+  - --trigger-http
+  - --memory
+  - 2048MB
+  - --timeout
+  - 500s
+  - --ingress-settings
+  - internal-only
+  - --ignore-file
+  - ./.gcloudignore

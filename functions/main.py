@@ -51,10 +51,10 @@ def fetch_info_in_playlist(client, playlist_id, next_page_token=None):
         return result
 
 def main_upload(requests):
-    client_yt = build("youtube", "v3", developerKey=config.key, cache_discovery=False)
-    client_bq = bigquery.Client(project=config.project_name)
+    client_yt = build("youtube", "v3", developerKey=config.YOUTUBE_KEY, cache_discovery=False)
+    client_bq = bigquery.Client(project=config.GCP_PROJECT)
     yyyymmdd = datetime.date.today().strftime('%Y%m%d')
-    table = f"{config.project_name}.million_celebration.view_count_{yyyymmdd}"
+    table = f"{config.GCP_PROJECT}.million_celebration.view_count_{yyyymmdd}"
     channels = channel_list.channels
     for c in channels:
         for p in c["playlists"]:
@@ -64,17 +64,17 @@ def main_upload(requests):
 
 # tweet celebrate message
 def main_tweet(requests):
-    client_bq = bigquery.Client(project=config.project_name)
+    client_bq = bigquery.Client(project=config.GCP_PROJECT)
     client_tw = Twitter(auth=OAuth(
-        config.token,
-        config.token_secret,
-        config.consumer_key,
-        config.consumer_secret
+        config.M_CELEBRATE_TOKEN,
+        config.M_CELEBRATE_TOKEN_SECRET,
+        config.M_CELEBRATE_CONSUMER_KEY,
+        config.M_CELEBRATE_CONSUMER_SECRET,
     ))
     yyyymmdd_today = datetime.date.today().strftime('%Y%m%d')
     yyyymmdd_yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y%m%d')
-    table_today = f"{config.project_name}.million_celebration.view_count_{yyyymmdd_today}"
-    table_yesterday = f"{config.project_name}.million_celebration.view_count_{yyyymmdd_yesterday}"
+    table_today = f"{config.GCP_PROJECT}.million_celebration.view_count_{yyyymmdd_today}"
+    table_yesterday = f"{config.GCP_PROJECT}.million_celebration.view_count_{yyyymmdd_yesterday}"
     query = f"""
         SELECT t.playlist_id, t.video_id
         FROM {table_today} as t inner join {table_yesterday} as y using(video_id)

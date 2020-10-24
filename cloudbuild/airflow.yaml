@@ -1,0 +1,33 @@
+steps:
+  - id: download-config
+    dir: airflow/dags
+    name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'gs://dr666m1_secrets/config.py', './million_celebration/million_celebration_config.py']
+
+  - id: set-variable
+    dir: airflow/dags
+    name: busybox
+    entrypoint: sed
+    args:
+      - -i
+      - "s/SHORT_SHA/$SHORT_SHA/g"
+      - ./million_celebration_daily.py
+
+  - id: zip-dag
+    dir: airflow/dags
+    name: gcr.io/cloud-builders/gsutil
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        zip -r million_celebration *
+
+  - id: upload-dag
+    dir: airflow/dags
+    name: gcr.io/cloud-builders/gcloud
+    args:
+      - compute
+      - scp
+      - ./million_celebration.zip
+      - ${_USER_INSTANCE}:~/airflow/dags/million_celebration.zip
+      - --zone=${_ZONE}
