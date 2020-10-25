@@ -17,7 +17,7 @@ def exec_functions(url, token, task, task_instance, **kwargs):
     if response.status_code//100 != 2:
         msg = "error report\nid: {}\nn-th: {}".format(task.task_id, task_instance.try_number)
         send_line_msg(msg, token)
-        raise Exception("response status code is not in 200 - 299\n{}".format(res.text))
+        raise Exception("response status code is not in 200 - 299\n{}".format(response.text))
 
 def send_line_msg(msg, token):
     try:
