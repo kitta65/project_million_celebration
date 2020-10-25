@@ -15,6 +15,10 @@ CloudBuild管理画面の設定から以下を有効化（いずれも必須）�
 - ComputeEngine（Computeインスタンス管理者）
 - ServiceAccounts（サービスアカウントユーザー）
 
+## その他
+- [Resource Manager API](https://cloud.google.com/resource-manager/docs/apis?hl=ja)を有効化
+    - CloudFunctionsに一つしか関数がない状態では必要なかったが、二つ目から何故か要求された。
+
 # 注意
 - 初回のみ未認証の関数呼び出しの許可を行う。
     - CloudFunctionsの管理画面から各関数にとび、allUsersにcloudfunctions.invokerロールを付与。

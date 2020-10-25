@@ -2,7 +2,7 @@ steps:
   - id: download-config
     dir: airflow/dags
     name: gcr.io/cloud-builders/gsutil
-    args: ['cp', 'gs://dr666m1_secrets/config.py', './million_celebration/million_celebration_config.py']
+    args: ['cp', 'gs://dr666m1_secrets/config.py', './million_celebration_pkg/million_celebration_config.py']
 
   - id: set-variable
     dir: airflow/dags
