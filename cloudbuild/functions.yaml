@@ -2,6 +2,7 @@ steps:
 - id: download-config
   dir: functions
   name: gcr.io/cloud-builders/gsutil
+  # This bucket no longer exsists.
   args: ['cp', 'gs://dr666m1_secrets/config.py', './config.py']
 
 - id: deploy-upload-function

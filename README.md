@@ -1,3 +1,5 @@
+⚠️移動しました（[こちら](https://github.com/dr666m1/daily-batch/tree/main/million-celebration)）。
+
 # 100万再生お祝いbot
 
 ## 概要
